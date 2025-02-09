@@ -95,7 +95,7 @@ export class AuthService {
     this.tokenChecked.set(true); // ✅ Ensure UI updates even if not authenticated
     this.isAuthenticatedSubject.next(false);
     this.userName.set(null); // ✅ Clear username
-    this.logout();
+    // this.logout();
   }
 
   // ✅ Store token, decode username, and redirect
