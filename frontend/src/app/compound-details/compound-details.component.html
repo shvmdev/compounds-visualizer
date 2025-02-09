@@ -1,0 +1,56 @@
+<div *ngIf="compound(); else loading" class="details-container">
+  <div class="details-card">
+    <img
+      [src]="compound()?.imageSource"
+      alt="Compound Image"
+      class="compound-image"
+    />
+
+    <!-- Edit Mode -->
+    <div *ngIf="isEditing; else viewMode">
+      <input
+        [(ngModel)]="editCompound.name"
+        class="input-field"
+        placeholder="Name"
+      />
+      <textarea
+        [(ngModel)]="editCompound.description"
+        class="input-field"
+        placeholder="Description"
+      ></textarea>
+      <input
+        [(ngModel)]="editCompound.imageSource"
+        class="input-field"
+        placeholder="Image URL"
+      />
+
+      <!-- Loading Button with Spinner -->
+      <button *ngIf="!isSaving" (click)="saveChanges()" class="save-btn">
+        Save
+      </button>
+      <button *ngIf="isSaving" class="save-btn loading" disabled>
+        <span class="spinner"></span> Saving...
+      </button>
+
+      <button (click)="toggleEdit()" class="cancel-btn">Cancel</button>
+    </div>
+
+    <!-- View Mode -->
+    <ng-template #viewMode>
+      <h2 class="compound-title">{{ compound()?.name }}</h2>
+      <p class="compound-description">{{ compound()?.description }}</p>
+
+      <button (click)="toggleEdit()" class="edit-btn">Edit</button>
+    </ng-template>
+  </div>
+</div>
+
+<!-- Skeleton Loader while data is loading -->
+<ng-template #loading>
+  <div class="skeleton-container">
+    <div class="skeleton skeleton-title"></div>
+    <div class="skeleton skeleton-image"></div>
+    <div class="skeleton skeleton-text"></div>
+    <div class="skeleton skeleton-text"></div>
+  </div>
+</ng-template>

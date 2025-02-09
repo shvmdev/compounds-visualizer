@@ -1,0 +1,16 @@
+<div class="card" (click)="onCardClick()">
+  <img
+    class="card-image"
+    [src]="compound().imageSource"
+    alt="{{ compound().name }}"
+  />
+  <div class="card-content">
+    <h2 class="card-title">{{ compound().name }}</h2>
+    <p class="card-description">
+      {{ showFullDescription() ? compound().description : trimmedDescription }}
+    </p>
+    <button class="card-button" (click)="toggleDescription()">
+      {{ showFullDescription() ? "Read Less" : "Read More" }}
+    </button>
+  </div>
+</div>

@@ -1,0 +1,28 @@
+<!-- <h3>Compounds List</h3> -->
+@if (!compoundItems().length) {
+<div class="skeleton-container">
+  <div class="skeleton-card" *ngFor="let _ of [1, 2, 3, 4]">
+    <div class="skeleton-image"></div>
+    <div class="skeleton-text"></div>
+    <div class="skeleton-text short"></div>
+    <div class="skeleton-button"></div>
+  </div>
+</div>
+}
+
+<ul class="compounds">
+  @for (compound of compoundItems(); track compound.id) {
+  <app-compound-item
+    [compound]="compound"
+    (viewDetails)="viewDetails(compound)"
+  />
+  }
+</ul>
+
+<div class="pagination">
+  <button (click)="prevPage()" [disabled]="page() === 1">Previous</button>
+  <span>Page {{ page() }} of {{ totalPages() }}</span>
+  <button (click)="nextPage()" [disabled]="page() === totalPages()">
+    Next
+  </button>
+</div>
