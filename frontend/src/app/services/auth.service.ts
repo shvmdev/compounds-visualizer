@@ -95,7 +95,7 @@ export class AuthService {
     this.tokenChecked.set(true); // ✅ Ensure UI updates even if not authenticated
     this.isAuthenticatedSubject.next(false);
     this.userName.set(null); // ✅ Clear username
-    // this.logout();
+    this.handleUnauthorizedAccess();
   }
 
   // ✅ Store token, decode username, and redirect
@@ -140,5 +140,16 @@ export class AuthService {
   // ✅ Check if a token exists in storage
   tokenExists(): boolean {
     return !!this.getToken();
+  }
+
+  private handleUnauthorizedAccess(): void {
+    const publicRoutes = ['/', '/login', '/register']; // Define public routes
+    console.log(this.router.url);
+    const isPublicRoute = publicRoutes.includes(this.router.url);
+
+    if (!isPublicRoute) {
+      console.log('🚫 Unauthorized access detected. Redirecting to login...');
+      this.logout();
+    }
   }
 }
