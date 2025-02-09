@@ -1,28 +1,12 @@
 <div *ngIf="compound(); else loading" class="details-container">
   <div class="details-card">
-    <img
-      [src]="compound()?.imageSource"
-      alt="Compound Image"
-      class="compound-image"
-    />
+    <img [src]="compound()?.imageSource" [alt]="compound()?.imageAttribute" class="compound-image" />
 
     <!-- Edit Mode -->
     <div *ngIf="isEditing; else viewMode">
-      <input
-        [(ngModel)]="editCompound.name"
-        class="input-field"
-        placeholder="Name"
-      />
-      <textarea
-        [(ngModel)]="editCompound.description"
-        class="input-field"
-        placeholder="Description"
-      ></textarea>
-      <input
-        [(ngModel)]="editCompound.imageSource"
-        class="input-field"
-        placeholder="Image URL"
-      />
+      <input [(ngModel)]="editCompound.name" class="input-field" placeholder="Name" />
+      <textarea [(ngModel)]="editCompound.description" class="input-field" placeholder="Description"></textarea>
+      <input [(ngModel)]="editCompound.imageSource" class="input-field" placeholder="Image URL" />
 
       <!-- Loading Button with Spinner -->
       <button *ngIf="!isSaving" (click)="saveChanges()" class="save-btn">

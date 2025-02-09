@@ -1,0 +1,56 @@
+version: "3.8"
+
+services:
+  # Backend Service
+  backend:
+    build: ./backend
+    container_name: backend_container
+    restart: always
+    ports:
+      - "5000:5000"
+    depends_on:
+      - database
+    environment:
+      - NODE_ENV=production
+      - DB_HOST=database # MySQL container name (not 127.0.0.1)
+      - DB_USER=root
+      - DB_PASSWORD=root
+      - DB_NAME=compounds_db # ✅ Must match MySQL DB name
+    networks:
+      - app-network
+
+      # Frontend Service
+  frontend:
+    build: ./frontend
+    container_name: frontend_container
+    restart: always
+    ports:
+      - "80:80"
+    depends_on:
+      - backend
+    networks:
+      - app-network
+
+  # Database (MySQL) Service
+  database:
+    image: mysql:latest
+    container_name: mysql_container
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: compounds_db # ✅ Must match backend's DB_NAME
+      MYSQL_PASSWORD: root
+    ports:
+      - "3307:3306"
+    volumes:
+      - mysql-data:/var/lib/mysql
+    networks:
+      - app-network
+
+# Network for inter-container communication
+networks:
+  app-network:
+
+# Persistent volume for MySQL data storage
+volumes:
+  mysql-data:

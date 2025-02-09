@@ -3,6 +3,7 @@ import { Router, RouterLink } from '@angular/router';
 import { AuthService } from '../../../services/auth.service';
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-login',
@@ -15,23 +16,39 @@ export class LoginComponent {
   password = '';
   errorMessage: string = '';
 
-  constructor(private authService: AuthService, private router: Router) {}
+  constructor(
+    private authService: AuthService,
+    private router: Router,
+    private snackBar: MatSnackBar
+  ) {}
 
   onLogin() {
     if (!this.username || !this.password) {
-      this.errorMessage = 'Username and password are required';
+      this.showSnackbar('Username and password are required', 'error');
       return;
     }
+
     this.authService
       .login({ username: this.username, password: this.password })
-      .subscribe(
-        (response: any) => {
-          localStorage.setItem('token', response.token); // Store token in localStorage
-          this.router.navigate(['/compounds']); // Redirect to home page
+      .subscribe({
+        next: (response) => {
+          this.showSnackbar('✅ Login successful! Redirecting...', 'success');
+          setTimeout(() => this.authService.setToken(response.token), 2000); // ✅ Delay redirection
         },
-        (error) => {
-          this.errorMessage = 'Invalid username or password';
-        }
-      );
+        error: (err) => {
+          this.showSnackbar(
+            err.error?.message || '❌ Login failed. Please try again.',
+            'error'
+          );
+        },
+      });
+  }
+
+  // ✅ Utility function for showing Snackbar
+  private showSnackbar(message: string, type: 'success' | 'error') {
+    this.snackBar.open(message, 'Close', {
+      duration: 3000,
+      panelClass: type === 'success' ? 'success-snackbar' : 'error-snackbar',
+    });
   }
 }

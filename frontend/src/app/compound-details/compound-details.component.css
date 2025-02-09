@@ -27,7 +27,7 @@
 .compound-image {
   width: 100%;
   max-height: 250px;
-  object-fit: cover;
+  object-fit: contain;
   border-radius: 8px;
 }
 
@@ -62,11 +62,11 @@
   border: none;
   border-radius: 5px;
   cursor: pointer;
-  font-weight: bold;
+  /* font-weight: bold; */
 }
 
 .edit-btn {
-  background-color: #007bff;
+  background-color: #6a11cb;
   color: white;
 }
 

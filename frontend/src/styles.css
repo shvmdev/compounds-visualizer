@@ -8,3 +8,24 @@
 body {
   font-family: "Poppins", sans-serif;
 }
+
+html,
+body {
+  height: 100%;
+}
+body {
+  margin: 0;
+  font-family: Roboto, "Helvetica Neue", sans-serif;
+}
+
+.success-snackbar {
+  background-color: #4caf50 !important; /* Green */
+  color: white !important;
+  font-size: 16px;
+}
+
+.error-snackbar {
+  background-color: #f44336 !important; /* Red */
+  color: white !important;
+  font-size: 16px;
+}

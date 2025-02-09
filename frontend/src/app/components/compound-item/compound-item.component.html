@@ -9,7 +9,7 @@
     <p class="card-description">
       {{ showFullDescription() ? compound().description : trimmedDescription }}
     </p>
-    <button class="card-button" (click)="toggleDescription()">
+    <button class="card-button" (click)="toggleDescription($event)">
       {{ showFullDescription() ? "Read Less" : "Read More" }}
     </button>
   </div>

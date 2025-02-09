@@ -18,22 +18,26 @@ export class CompoundsComponent implements OnInit {
   compoundItems = signal<Array<Compound>>([]);
   page = signal(1); // Signal for current page
   totalPages = signal(3); // Max limit of 3 pages
+  loading = signal(false);
 
   ngOnInit(): void {
     this.fetchCompounds();
   }
 
   fetchCompounds() {
+    this.loading.set(true);
     this.compoundService
       .getCompoundsFromApi(this.page())
       .pipe(
         catchError((err) => {
           console.log(err);
+          this.loading.set(false);
           throw err;
         })
       )
       .subscribe((compounds) => {
         this.compoundItems.set(compounds);
+        this.loading.set(false);
       });
   }
 
