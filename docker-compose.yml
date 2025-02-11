@@ -1,36 +1,6 @@
 version: "3.8"
 
 services:
-  # Backend Service
-  backend:
-    build: ./backend
-    container_name: backend_container
-    restart: always
-    ports:
-      - "5000:5000"
-    depends_on:
-      - database
-    environment:
-      - NODE_ENV=production
-      - DB_HOST=database # MySQL container name (not 127.0.0.1)
-      - DB_USER=root
-      - DB_PASSWORD=root
-      - DB_NAME=compounds_db # ✅ Must match MySQL DB name
-    networks:
-      - app-network
-
-      # Frontend Service
-  frontend:
-    build: ./frontend
-    container_name: frontend_container
-    restart: always
-    ports:
-      - "80:80"
-    depends_on:
-      - backend
-    networks:
-      - app-network
-
   # Database (MySQL) Service
   database:
     image: mysql:latest
@@ -46,10 +16,47 @@ services:
       - mysql-data:/var/lib/mysql
     networks:
       - app-network
+    healthcheck: # ✅ Ensures MySQL is ready before backend starts
+      test: ["CMD", "mysqladmin", "ping", "-h", "127.0.0.1"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+      # Backend Service
+  backend:
+    build: ./backend
+    container_name: backend_container
+    restart: always
+    ports:
+      - "5000:5000"
+    depends_on:
+      database:
+        condition: service_healthy # ✅ Waits for MySQL to be ready
+    environment:
+      - NODE_ENV=production
+      - DB_HOST=database # ✅ Use MySQL service name
+      - DB_USER=root
+      - DB_PASSWORD=root
+      - DB_NAME=compounds_db
+    networks:
+      - app-network
+
+  # Frontend Service
+  frontend:
+    build: ./frontend
+    container_name: frontend_container
+    restart: always
+    ports:
+      - "80:80"
+    depends_on:
+      - backend # ✅ Ensures backend starts before frontend
+    networks:
+      - app-network
 
 # Network for inter-container communication
 networks:
   app-network:
+    driver: bridge
 
 # Persistent volume for MySQL data storage
 volumes:
