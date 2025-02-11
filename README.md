@@ -2,7 +2,9 @@ Project Workflow Documentation
 📌 Overview
 
 This document outlines the workflow of the project, focusing on authentication, authorization, and API interactions related to compound management.
+
 🔐 Authentication & Authorization
+
 1️⃣ User Registration & Login
 
     Users can register and log in using their credentials.
@@ -16,6 +18,7 @@ This document outlines the workflow of the project, focusing on authentication, 
     API access is restricted based on user roles.
 
 🔄 API Workflow
+
 1️⃣ Authentication APIs
 
     POST /auth/register → Registers a new user.
@@ -27,6 +30,7 @@ This document outlines the workflow of the project, focusing on authentication, 
     PUT /compounds/:id → Updates a compound
 
 ⚙️ Workflow Explanation
+
 1️⃣ User Authentication
 
     A user logs in using email and password.
@@ -53,6 +57,7 @@ This document outlines the workflow of the project, focusing on authentication, 
 🚀 Deployment Guide
 
 This project supports Docker deployment using pre-built images stored in a .tar file. Follow the steps below to create, transfer, and deploy the application.
+
 1️⃣ Create a .tar File of Docker Images
 
 To export all required Docker images into a single .tar file, run:
@@ -60,6 +65,7 @@ To export all required Docker images into a single .tar file, run:
 docker save -o my_project.tar(tarname) compounds-visualizer-frontend:latest compounds-visualizer-backend:latest
 
 This will save the images as my_project.tar.
+
 2️⃣ Transfer the .tar File
 
 Send my_project.tar to the target system using any method:
@@ -77,6 +83,7 @@ On the deployment server, load the images from the .tar file:
 docker load -i my_project.tar
 
 This will import the saved images into the local Docker registry.
+
 4️⃣ Update docker-compose.yml
 
 Before running docker-compose, update docker-compose.yml to use the loaded images instead of building from source.
@@ -94,6 +101,7 @@ frontend:
 image: compounds-visualizer-frontend:latest
 
 Repeat this for backend.
+
 5️⃣ Start the Containers
 
 Once the images are loaded and docker-compose.yml is updated, start the containers with:
@@ -101,6 +109,7 @@ Once the images are loaded and docker-compose.yml is updated, start the containe
 docker-compose up -d
 
 This will launch the frontend, backend, and database in detached mode (-d).
+
 6️⃣ Verify Deployment
 
 Check if the containers are running:
@@ -108,11 +117,13 @@ Check if the containers are running:
 docker ps
 
 You should see all services up and running.
+
 📌 Notes
 
 ✅ No need to rebuild the images on the target system.
 ✅ Ensure docker-compose.yml references the correct image names.
 ✅ Use docker-compose down to stop the services when needed.
+
 📢 Conclusion
 
 This document provides a structured view of the authentication, authorization, and API interactions involved in the project, along with clear deployment steps using Docker. Let me know if further details are needed! 🚀
